@@ -8,11 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0d0f14;--surface:#161922;--surface2:#1e2330;--border:#2a3045;
-  --accent:#4f8ef7;--accent2:#f7a74f;--accent3:#4ff7b0;--accent4:#f74f7a;
-  --text:#e8ecf5;--text-dim:#8892a4;--header-h:#1a2035;
-}
+:root{--bg:#0d0f14;--surface:#161922;--surface2:#1e2330;--border:#2a3045;--accent:#4f8ef7;--accent2:#f7a74f;--accent3:#4ff7b0;--accent4:#f74f7a;--text:#e8ecf5;--text-dim:#8892a4;--header-h:#1a2035}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
@@ -24,7 +20,6 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.02em}
 .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .tab:hover:not(.active){border-color:var(--accent);color:var(--text)}
 .section{display:none}.section.show{display:block}
-/* Upload */
 .uploads-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .uzone{border:2px dashed var(--border);border-radius:14px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface);position:relative}
 .uzone:hover,.uzone.drag{border-color:var(--accent);background:#161e2e}
@@ -33,8 +28,7 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.02em}
 .uzone .ico{font-size:28px;margin-bottom:8px}
 .uzone h3{font-size:15px;font-weight:600;margin-bottom:4px}
 .uzone p{color:var(--text-dim);font-size:12px}
-.uzone .fbadge{display:none;margin-top:10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent3);background:#0d2a1e;border:1px solid var(--accent3);border-radius:6px;padding:4px 12px;display:inline-block}
-/* Bar */
+.uzone .fbadge{margin-top:10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent3);background:#0d2a1e;border:1px solid var(--accent3);border-radius:6px;padding:4px 12px;display:none}
 .bar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;border:1px solid var(--border);background:var(--surface)}
 .bar.info{border-color:var(--accent);background:#0d1620;color:var(--accent)}
 .bar.ok{border-color:var(--accent3);background:#0d1e18;color:var(--accent3)}
@@ -42,42 +36,32 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.02em}
 .bar.err{border-color:var(--accent4);background:#2a1020;color:var(--accent4)}
 .spin{display:inline-block;width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* Buttons */
 .btns{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;font-family:'DM Sans',sans-serif}
 .btn-green{background:var(--accent3);color:#001a10}.btn-green:hover{background:#3de0a0}
 .btn-blue{background:var(--accent);color:#fff}.btn-blue:hover{background:#3a7aee}
 .btn-orange{background:var(--accent2);color:#1a1200}.btn-orange:hover{background:#e09540}
 .btn:disabled{opacity:.35;cursor:not-allowed}
-/* Log */
 .logbox{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dim);max-height:140px;overflow-y:auto;margin-bottom:16px;display:none}
 .logbox.show{display:block}
 .ll{margin-bottom:3px;line-height:1.6}
 .ll.ok{color:var(--accent3)}.ll.err{color:var(--accent4)}.ll.info{color:var(--accent)}
-/* Stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
 .scard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;border-top:3px solid var(--accent)}
-.scard.c1{border-top-color:var(--accent)}.scard.c2{border-top-color:var(--accent2)}
-.scard.c3{border-top-color:var(--accent3)}.scard.c4{border-top-color:var(--accent4)}
+.scard.c1{border-top-color:var(--accent)}.scard.c2{border-top-color:var(--accent2)}.scard.c3{border-top-color:var(--accent3)}.scard.c4{border-top-color:var(--accent4)}
 .slabel{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-bottom:6px}
 .sval{font-size:30px;font-weight:700;font-family:'Space Mono',monospace}
-.scard.c1 .sval{color:var(--accent)}.scard.c2 .sval{color:var(--accent2)}
-.scard.c3 .sval{color:var(--accent3)}.scard.c4 .sval{color:var(--accent4)}
-/* Insights */
+.scard.c1 .sval{color:var(--accent)}.scard.c2 .sval{color:var(--accent2)}.scard.c3 .sval{color:var(--accent3)}.scard.c4 .sval{color:var(--accent4)}
 .insights{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:24px}
 .ins-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .ins-hdr h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-dim)}
 .ins-tag{font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.3);color:var(--accent);padding:2px 10px;border-radius:20px}
 .ins-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 .icard{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;border-left:3px solid var(--accent)}
-.icard:nth-child(2){border-left-color:var(--accent2)}
-.icard:nth-child(3){border-left-color:var(--accent3)}
-.icard:nth-child(4){border-left-color:var(--accent4)}
-.icard:nth-child(5){border-left-color:#a78bfa}
+.icard:nth-child(2){border-left-color:var(--accent2)}.icard:nth-child(3){border-left-color:var(--accent3)}.icard:nth-child(4){border-left-color:var(--accent4)}.icard:nth-child(5){border-left-color:#a78bfa}
 .inum{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:6px}
 .itext{font-size:13px;font-weight:500;line-height:1.5}
 .itext strong{font-weight:700}
-/* Tables */
 .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .tcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
 .thead2{padding:14px 18px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -95,12 +79,12 @@ tfoot td{padding:10px 14px;text-align:center;font-weight:700;background:var(--su
 tfoot td:first-child{text-align:left}
 .filter-bar{display:flex;gap:8px;padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap}
 .filter-bar select{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:4px 10px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;outline:none}
-.filter-bar select:focus{border-color:var(--accent)}font-weight:700!important;font-size:12px!important;text-transform:uppercase;letter-spacing:.08em;padding:8px 14px!important}
+.filter-bar select:focus{border-color:var(--accent)}
+.row-unit td{background:#1a2035!important;color:var(--accent)!important;font-weight:700!important;font-size:12px!important;text-transform:uppercase;letter-spacing:.08em;padding:8px 14px!important}
 .row-sub td{background:#181e2e!important;border-top:1px solid var(--border);border-bottom:2px solid var(--border);font-size:12px!important}
 .ca{color:var(--accent3);font-weight:600}.cb{color:var(--accent4);font-weight:600}
 .ct{color:var(--accent2);font-weight:700}.ci{color:var(--accent);font-weight:600}
 .sa{color:var(--accent3);font-weight:700;font-size:12px}.sb{color:var(--accent4);font-weight:700;font-size:12px}
-/* Password */
 .pw-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
 .pw-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 28px;width:300px;text-align:center}
 .pw-box h2{font-size:16px;font-weight:700;margin-bottom:6px}
@@ -120,7 +104,6 @@ tfoot td:first-child{text-align:left}
   <h1>Agent Talk Time Dashboard</h1>
   <div class="logo" style="color:var(--text-dim)">Report Generator</div>
 </header>
-
 <div class="pw-overlay" id="pwModal" style="display:none">
   <div class="pw-box">
     <div style="font-size:32px;margin-bottom:10px">🔒</div>
@@ -132,16 +115,14 @@ tfoot td:first-child{text-align:left}
     <span class="pw-cancel" onclick="document.getElementById('pwModal').style.display='none'">Cancel</span>
   </div>
 </div>
-
 <div class="main">
   <div class="tabs">
     <div class="tab" id="tabView" onclick="showTab('view')">📊 View Reports</div>
     <div class="tab" id="tabAdmin" onclick="showTab('admin')">🔒 Admin Upload</div>
   </div>
-
   <!-- VIEW -->
   <div class="section" id="secView">
-    <div class="bar info" id="viewMsg">Upload data from the Admin tab to see reports here.</div>
+    <div class="bar info" id="viewMsg">Loading latest data...</div>
     <div class="ts" id="tsLabel" style="display:none"></div>
     <div class="insights" id="insBox" style="display:none">
       <div class="ins-hdr"><h2>📌 Insights</h2><div class="ins-tag">Auto-generated · 5 key points</div></div>
@@ -163,12 +144,10 @@ tfoot td:first-child{text-align:left}
     </div>
     <div class="tgrid" id="tGrid" style="display:none">
       <div class="tcard">
-        <div class="thead2">
-          <h3>Report 1 — Agent Summary</h3>
-          <div class="badge" id="b1">0 agents</div>
-        </div>
+        <div class="thead2"><h3>Report 1 — Agent Summary</h3><div class="badge" id="b1">0 agents</div></div>
         <div class="filter-bar">
-          <select id="f-unit" onchange="renderTable1()"><option value="">All Units</option></select>
+          <select id="f-unit" onchange="onUnitFilter()"><option value="">All Units</option></select>
+          <select id="f-tl" onchange="renderTable1()"><option value="">All TLs</option></select>
           <select id="f-status" onchange="renderTable1()"><option value="">All Status</option></select>
           <select id="f-result" onchange="renderTable1()"><option value="">All Results</option></select>
         </div>
@@ -178,10 +157,7 @@ tfoot td:first-child{text-align:left}
         </table></div>
       </div>
       <div class="tcard">
-        <div class="thead2">
-          <h3>Report 2 — Unit-wise TL Summary</h3>
-          <div class="badge" id="b2">0 units</div>
-        </div>
+        <div class="thead2"><h3>Report 2 — Unit-wise TL Summary</h3><div class="badge" id="b2">0 units</div></div>
         <div class="filter-bar">
           <select id="f-unit2" onchange="renderTable2()"><option value="">All Units</option></select>
         </div>
@@ -192,616 +168,275 @@ tfoot td:first-child{text-align:left}
       </div>
     </div>
   </div>
-
   <!-- ADMIN -->
   <div class="section" id="secAdmin">
     <div class="uploads-grid">
-      <div class="uzone" id="z1">
-        <input type="file" id="f1" accept=".csv,.xlsx,.xls"/>
-        <div class="ico">📂</div>
-        <h3>Raw Call Data</h3>
-        <p>CSV preferred for large files (100–500 MB)</p>
-        <div class="fbadge" id="b1f"></div>
-      </div>
-      <div class="uzone" id="z2">
-        <input type="file" id="f2" accept=".csv,.xlsx,.xls"/>
-        <div class="ico">🗂️</div>
-        <h3>Mapping File</h3>
-        <p>Emp Code · Name · Status · DOJ · Unit · Team Leader</p>
-        <div class="fbadge" id="b2f"></div>
-      </div>
+      <div class="uzone" id="z1"><input type="file" id="f1" accept=".csv,.xlsx,.xls"/><div class="ico">📂</div><h3>Raw Call Data</h3><p>CSV preferred for large files (100–500 MB)</p><div class="fbadge" id="b1f"></div></div>
+      <div class="uzone" id="z2"><input type="file" id="f2" accept=".csv,.xlsx,.xls"/><div class="ico">🗂️</div><h3>Mapping File</h3><p>Emp Code · Name · Status · DOJ · Unit · Team Leader</p><div class="fbadge" id="b2f"></div></div>
     </div>
     <div class="bar info" id="adminBar">⏳ Please upload both files to continue.</div>
     <div class="logbox" id="logBox"></div>
     <div class="btns" id="procBtns" style="display:none">
       <button class="btn btn-green" id="procBtn" onclick="runProcess()">⚡ Process & Generate Reports</button>
-      <button class="btn btn-blue" id="saveBtn" onclick="saveToCloud()" style="display:none">☁ Save to Cloud & Publish</button>
     </div>
   </div>
 </div>
-
 <script>
-// ── globals ───────────────────────────────────────────────
 const SCRIPT_URL = 'https://megha-talktime.anuj-sharma.workers.dev';
 const PW = 'Megha@1234mumbai';
-let unlocked = false;
-let rawFile = null, mapRows = null;
-let r1 = [], r2 = [];
+let unlocked=false, rawFile=null, mapRows=null, r1=[], r2=[];
 
-// ── tabs ──────────────────────────────────────────────────
 function showTab(t) {
-  if (t === 'admin' && !unlocked) {
-    document.getElementById('pwModal').style.display = 'flex';
-    setTimeout(() => document.getElementById('pwInp').focus(), 80);
-    return;
-  }
-  document.getElementById('tabView').classList.toggle('active', t === 'view');
-  document.getElementById('tabAdmin').classList.toggle('active', t === 'admin');
-  document.getElementById('secView').classList.toggle('show', t === 'view');
-  document.getElementById('secAdmin').classList.toggle('show', t === 'admin');
-  if (t === 'view') {
-    if (r1.length > 0) renderView();
-    else loadFromCloud();
-  }
-  if (t === 'admin') checkReady();
+  if(t==='admin'&&!unlocked){document.getElementById('pwModal').style.display='flex';setTimeout(()=>document.getElementById('pwInp').focus(),80);return;}
+  document.getElementById('tabView').classList.toggle('active',t==='view');
+  document.getElementById('tabAdmin').classList.toggle('active',t==='admin');
+  document.getElementById('secView').classList.toggle('show',t==='view');
+  document.getElementById('secAdmin').classList.toggle('show',t==='admin');
+  if(t==='view'){if(r1.length>0)renderView();else loadFromCloud();}
+  if(t==='admin')checkReady();
 }
 
-// ── cloud sync ────────────────────────────────────────────
 async function loadFromCloud() {
-  const msg = document.getElementById('viewMsg');
-  msg.style.display = 'flex';
-  msg.className = 'bar info';
-  msg.innerHTML = '<span class="spin"></span> Loading latest data...';
+  const msg=document.getElementById('viewMsg');
+  msg.style.display='flex';msg.className='bar info';
+  msg.innerHTML='<span class="spin"></span> Loading latest data...';
   try {
-    const res = await fetch(SCRIPT_URL + '?action=read');
-    const json = await res.json();
-    if (json.status === 'empty' || !json.rows || json.rows.length === 0) {
-      msg.innerHTML = '⚠ No data uploaded yet. Ask admin to upload and publish.';
-      return;
+    const res=await fetch(SCRIPT_URL+'?action=read');
+    const json=await res.json();
+    if(json.status==='empty'||!json.rows||json.rows.length===0){msg.innerHTML='⚠ No data yet. Admin needs to upload and process.';return;}
+    r1=[];r2=[];
+    const meta=json.rows.find(r=>r[0]==='META');
+    if(meta) window._S={tA:+meta[1],tC:+meta[2],tAb:+meta[3],tBl:+meta[4],totalRawCalls:+meta[5],dadCalls:+meta[6],otherCalls:+meta[7]};
+    window._TS=json.rows.find(r=>r[0]==='TS')?.[1]||'';
+    for(const row of json.rows){
+      if(row[0]==='R1') r1.push({code:row[1],name:row[2],status:row[3],doj:row[4],nwd:+row[5],calls:+row[6],tt:row[7],avgC:row[8],avgTT:row[9],result:row[10],unit:row[11],tl:row[12]});
+      if(row[0]==='R2'){let sec=r2.find(s=>s.unit===row[1]);if(!sec){sec={unit:row[1],rows:[],sub:{}};r2.push(sec);}if(row[2]==='__SUB__')sec.sub={tot:+row[3],ab:+row[4],bl:+row[5],abP:row[6],blP:row[7]};else sec.rows.push({tl:row[2],tot:+row[3],ab:+row[4],bl:+row[5],abP:row[6],blP:row[7]});}
     }
-    // rebuild r1, r2, _S from saved rows
-    r1 = []; r2 = [];
-    const meta = json.rows.find(r => r[0] === 'META');
-    if (meta) window._S = { tA: +meta[1], tC: +meta[2], tAb: +meta[3], tBl: +meta[4], totalRawCalls: +meta[5], dadCalls: +meta[6], otherCalls: +meta[7] };
-    window._TS = json.rows.find(r => r[0] === 'TS')?.[1] || '';
-    for (const row of json.rows) {
-      if (row[0] === 'R1') r1.push({ code:row[1], name:row[2], status:row[3], doj:row[4], nwd:+row[5], calls:+row[6], tt:row[7], avgC:row[8], avgTT:row[9], result:row[10], unit:row[11], tl:row[12] });
-      if (row[0] === 'R2') {
-        let sec = r2.find(s => s.unit === row[1]);
-        if (!sec) { sec = {unit:row[1], rows:[], sub:{}}; r2.push(sec); }
-        if (row[2] === '__SUB__') sec.sub = {tot:+row[3], ab:+row[4], bl:+row[5], abP:row[6], blP:row[7]};
-        else sec.rows.push({tl:row[2], tot:+row[3], ab:+row[4], bl:+row[5], abP:row[6], blP:row[7]});
-      }
-    }
-    msg.style.display = 'none';
-    renderView();
-  } catch(e) {
-    msg.className = 'bar err';
-    msg.innerHTML = '✗ Could not load data: ' + e.message;
-  }
+    msg.style.display='none';renderView();
+  } catch(e){msg.className='bar err';msg.innerHTML='✗ Could not load: '+e.message;}
 }
 
 async function saveToCloud() {
-  const btn = document.getElementById('saveBtn');
-  btn.disabled = true; btn.textContent = '⏳ Saving...';
   try {
-    const rows = [];
-    // timestamp
-    rows.push(['TS', window._TS || '']);
-    // meta stats
-    const S = window._S || {};
-    rows.push(['META', S.tA||0, S.tC||0, S.tAb||0, S.tBl||0, S.totalRawCalls||0, S.dadCalls||0, S.otherCalls||0]);
-    // R1 rows
-    for (const r of r1) rows.push(['R1', r.code, r.name, r.status, r.doj, r.nwd, r.calls, r.tt, r.avgC, r.avgTT, r.result, r.unit, r.tl]);
-    // R2 rows
-    for (const sec of r2) {
-      for (const t of sec.rows) rows.push(['R2', sec.unit, t.tl, t.tot, t.ab, t.bl, t.abP, t.blP]);
-      rows.push(['R2', sec.unit, '__SUB__', sec.sub.tot, sec.sub.ab, sec.sub.bl, sec.sub.abP, sec.sub.blP]);
-    }
-    await fetch(SCRIPT_URL + '?action=clear');
-    await new Promise(r => setTimeout(r, 1000));
-    await fetch(SCRIPT_URL + '?action=write&rows=' + encodeURIComponent(JSON.stringify(rows)));
-    btn.textContent = '✓ Published! Everyone can see it now';
-    btn.style.background = 'var(--accent3)'; btn.style.color = '#001a10';
-    btn.disabled = false;
-  } catch(e) {
-    btn.textContent = '✗ Failed: ' + e.message;
-    btn.disabled = false;
-  }
+    const rows=[];
+    rows.push(['TS',window._TS||new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})]);
+    const S=window._S||{};
+    rows.push(['META',S.tA||0,S.tC||0,S.tAb||0,S.tBl||0,S.totalRawCalls||0,S.dadCalls||0,S.otherCalls||0]);
+    for(const r of r1) rows.push(['R1',r.code,r.name,r.status,r.doj,r.nwd,r.calls,r.tt,r.avgC,r.avgTT,r.result,r.unit,r.tl]);
+    for(const sec of r2){for(const t of sec.rows) rows.push(['R2',sec.unit,t.tl,t.tot,t.ab,t.bl,t.abP,t.blP]);rows.push(['R2',sec.unit,'__SUB__',sec.sub.tot,sec.sub.ab,sec.sub.bl,sec.sub.abP,sec.sub.blP]);}
+    const fw=(url,opts={},ms=10000)=>{const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);return fetch(url,{...opts,signal:c.signal}).finally(()=>clearTimeout(t));};
+    setBar('☁ Saving to cloud...','working');
+    try{await fw(SCRIPT_URL+'?action=clear',{},8000);}catch(e){}
+    await fw(SCRIPT_URL+'?action=write',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(rows)},15000);
+    setBar('✓ Saved & published to cloud!','ok');
+  } catch(e){setBar('⚠ Cloud save failed: '+e.message+' — data still shown locally','err');}
 }
 
-function doPw() {
-  if (document.getElementById('pwInp').value === PW) {
-    unlocked = true;
-    document.getElementById('pwModal').style.display = 'none';
-    showTab('admin');
-  } else {
-    document.getElementById('pwInp').classList.add('wrong');
-    document.getElementById('pwErr').style.display = 'block';
-    document.getElementById('pwInp').value = '';
-  }
+function doPw(){
+  if(document.getElementById('pwInp').value===PW){unlocked=true;document.getElementById('pwModal').style.display='none';showTab('admin');}
+  else{document.getElementById('pwInp').classList.add('wrong');document.getElementById('pwErr').style.display='block';document.getElementById('pwInp').value='';}
 }
 
-// ── file zones ────────────────────────────────────────────
-function setupZone(zid, fid, bid, isRaw) {
-  const zone = document.getElementById(zid);
-  const inp  = document.getElementById(fid);
-  const badge = document.getElementById(bid);
-
-  function handle(file) {
-    const mb = (file.size/1024/1024).toFixed(1);
-    badge.style.display = 'inline-block';
-
-    const reader = new FileReader();
-
-    if (file.name.match(/\.csv$/i)) {
-      // For CSV: store the File object directly — will be streamed chunk by chunk during processing
-      badge.textContent = '✓ ' + file.name + ' — ' + mb + ' MB (CSV, ready to stream)';
-      zone.classList.add('done');
-      if (isRaw) { rawFile = file; } else { mapRows = file; }
-      checkReady();
+function setupZone(zid,fid,bid,isRaw){
+  const zone=document.getElementById(zid),inp=document.getElementById(fid),badge=document.getElementById(bid);
+  function handle(file){
+    const mb=(file.size/1024/1024).toFixed(1);
+    badge.style.display='inline-block';
+    if(file.name.match(/\.csv$/i)){
+      badge.textContent='✓ '+file.name+' — '+mb+' MB';zone.classList.add('done');
+      if(isRaw)rawFile=file;else mapRows=file;checkReady();
     } else {
-      reader.onload = e => {
-        try {
-          const wb = XLSX.read(e.target.result, {type:'array', cellDates:false});
-          const data = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {defval:''});
-          badge.textContent = '✓ ' + file.name + ' — ' + data.length.toLocaleString() + ' rows';
-          zone.classList.add('done');
-          if (isRaw) { rawFile = data; } else { mapRows = data; }
-          checkReady();
-        } catch(err) { badge.textContent = '✗ Error: ' + err.message; }
-      };
-      reader.readAsArrayBuffer(file);
+      badge.textContent='⏳ Reading...';
+      const r=new FileReader();
+      r.onload=e=>{try{const wb=XLSX.read(e.target.result,{type:'array',cellDates:false});const data=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});badge.textContent='✓ '+file.name+' — '+data.length.toLocaleString()+' rows';zone.classList.add('done');if(isRaw)rawFile=data;else mapRows=data;checkReady();}catch(err){badge.textContent='✗ Error';}};
+      r.readAsArrayBuffer(file);
     }
   }
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
+  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');if(e.dataTransfer.files[0])handle(e.dataTransfer.files[0])});
+  inp.addEventListener('change',()=>{if(inp.files[0])handle(inp.files[0])});
+}
+setupZone('z1','f1','b1f',true);
+setupZone('z2','f2','b2f',false);
 
-  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
-  zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
-  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); if(e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]); });
-  inp.addEventListener('change', () => { if(inp.files[0]) handle(inp.files[0]); });
+function checkReady(){
+  const bar=document.getElementById('adminBar');
+  if(rawFile&&mapRows){bar.className='bar ok';bar.innerHTML='✓ Both files ready — click Process!';document.getElementById('procBtns').style.display='flex';}
+  else{bar.className='bar info';const miss=[!rawFile&&'Raw Call Data',!mapRows&&'Mapping File'].filter(Boolean);bar.innerHTML='⏳ Waiting for: '+miss.join(' & ');}
 }
 
-setupZone('z1','f1','b1f', true);
-setupZone('z2','f2','b2f', false);
+function lg(m,t=''){const b=document.getElementById('logBox');b.classList.add('show');const d=document.createElement('div');d.className='ll '+t;d.textContent='› '+m;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function setBar(m,t=''){const b=document.getElementById('adminBar');b.className='bar '+t;b.innerHTML=(t==='working'?'<span class="spin"></span> ':'')+m;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-function checkReady() {
-  const bar = document.getElementById('adminBar');
-  if (rawFile && mapRows) {
-    bar.className = 'bar ok';
-    bar.innerHTML = '✓ Both files ready — click Process below!';
-    document.getElementById('procBtns').style.display = 'flex';
-  } else {
-    bar.className = 'bar info';
-    const miss = [!rawFile && 'Raw Call Data', !mapRows && 'Mapping File'].filter(Boolean);
-    bar.innerHTML = '⏳ Still waiting for: ' + miss.join(' & ');
-  }
-}
-
-// ── log ───────────────────────────────────────────────────
-function lg(msg, t='') {
-  const b = document.getElementById('logBox');
-  b.classList.add('show');
-  const d = document.createElement('div');
-  d.className = 'll ' + t;
-  d.textContent = '› ' + msg;
-  b.appendChild(d);
-  b.scrollTop = b.scrollHeight;
-}
-function setBar(msg, t='') {
-  const b = document.getElementById('adminBar');
-  b.className = 'bar ' + t;
-  b.innerHTML = (t==='working'?'<span class="spin"></span> ':'') + msg;
-}
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-// ── helpers ───────────────────────────────────────────────
-function findCol(obj, list) {
-  const keys = Object.keys(obj);
-  // strip BOM and normalise
-  const n = s => s.toLowerCase().replace(/^\ufeff/,'').replace(/[\s_\-\.]/g,'');
-  for (const c of list) {
-    // exact normalised match first
-    const f = keys.find(k => n(k) === n(c));
-    if (f) return f;
-  }
-  for (const c of list) {
-    // contains match fallback
-    const f = keys.find(k => n(k).includes(n(c)) || n(c).includes(n(k)));
-    if (f) return f;
-  }
+function findCol(obj,list){
+  const keys=Object.keys(obj);
+  const n=s=>s.toLowerCase().replace(/^\ufeff/,'').replace(/[\s_\-\.]/g,'');
+  for(const c of list){const f=keys.find(k=>n(k)===n(c));if(f)return f;}
+  for(const c of list){const f=keys.find(k=>n(k).includes(n(c))||n(c).includes(n(k)));if(f)return f;}
   return null;
 }
-function parseDur(v) {
-  if (!v && v!==0) return 0;
-  v = String(v).trim();
-  const p = v.split(':');
-  if (p.length===3) return +p[0]*3600 + +p[1]*60 + +p[2];
-  if (p.length===2) return +p[0]*60 + +p[1];
-  return parseFloat(v)||0;
-}
-function hms(s) {
-  s = Math.round(s);
-  return String(Math.floor(s/3600)).padStart(2,'0')+':'+String(Math.floor((s%3600)/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
-}
-function fmtDate(v) {
-  if (!v) return '';
-  try { const d = new Date(v); return isNaN(d)?v:d.toLocaleDateString('en-IN'); } catch { return v; }
-}
+function parseDur(v){if(!v&&v!==0)return 0;v=String(v).trim();const p=v.split(':');if(p.length===3)return +p[0]*3600+(+p[1])*60+(+p[2]);if(p.length===2)return +p[0]*60+(+p[1]);return parseFloat(v)||0;}
+function hms(s){s=Math.round(s);return String(Math.floor(s/3600)).padStart(2,'0')+':'+String(Math.floor((s%3600)/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function fmtDate(v){if(!v)return'';try{const d=new Date(v);return isNaN(d)?v:d.toLocaleDateString('en-IN');}catch{return v;}}
+function splitLine(line,delim){if(delim==='\t')return line.split('\t');const r=[];let cur='',q=false;for(const c of line){if(c==='"')q=!q;else if(c===','&&!q){r.push(cur);cur='';}else cur+=c;}r.push(cur);return r;}
 
-// ── CSV parser (full text) ────────────────────────────────
-function parseCSVText(text) {
-  // strip BOM
-  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
-  const lines = text.split(/\r?\n/);
-  if (!lines.length) return [];
-  // detect delimiter from first line
-  const first = lines[0];
-  const delim = (first.match(/\t/g)||[]).length > (first.match(/,/g)||[]).length ? '\t' : ',';
-  const headers = splitLine(first, delim).map(h => h.trim().replace(/^"|"$/g,''));
-  const rows = [];
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
-    const cols = splitLine(line, delim);
-    const row = {};
-    headers.forEach((h, j) => row[h] = (cols[j]||'').trim().replace(/^"|"$/g,''));
-    rows.push(row);
-  }
-  return rows;
-}
-function splitLine(line, delim) {
-  if (delim === '\t') return line.split('\t');
-  const r = []; let cur = '', q = false;
-  for (const c of line) {
-    if (c === '"') q = !q;
-    else if (c === ',' && !q) { r.push(cur); cur = ''; }
-    else cur += c;
-  }
-  r.push(cur); return r;
-}
+const HEADER_KEYWORDS=['agent username','agentusername','emp code','empcode','duration','date time','datetime','call uuid','agent number'];
+function isRealHeaderRow(cols){const j=cols.map(c=>c.toLowerCase().replace(/\s/g,'')).join('|');return HEADER_KEYWORDS.some(k=>j.includes(k.replace(/\s/g,'')));}
 
-// ── CSV streamer (chunked for large files) ────────────────
-// Known header keywords — real header row must contain at least one of these
-const HEADER_KEYWORDS = ['agent username','agentusername','emp code','empcode','duration','date time','datetime','call uuid','agent number'];
-function isRealHeaderRow(cols) {
-  const joined = cols.map(c=>c.toLowerCase().replace(/\s/g,'')).join('|');
-  return HEADER_KEYWORDS.some(k => joined.includes(k.replace(/\s/g,'')));
-}
-
-async function streamCSV(file, onRow, onProg) {
-  const CHUNK = 512*1024;
-  const dec = new TextDecoder('utf-8');
-  let headers=null, left='', delim=null, total=0, skipped=0;
-  let offset=0; const size=file.size;
-  while (offset < size) {
-    const buf = await file.slice(offset, offset+CHUNK).arrayBuffer();
-    const txt = left + dec.decode(buf, {stream:true});
-    const lines = txt.split('\n');
-    left = lines.pop();
-    for (const line of lines) {
-      if (!delim) {
-        delim = (line.match(/\t/g)||[]).length > (line.match(/,/g)||[]).length ? '\t' : ',';
-        lg('Delimiter detected: ' + (delim==='\t'?'TAB':'COMMA'), 'info');
-      }
-      const cols = splitLine(line, delim);
-      if (!headers) {
-        const cleaned = cols.map(h => h.trim().replace(/^\ufeff/,'').replace(/\r/,'').replace(/^"|"$/g,''));
-        // skip rows until we find the real header row
-        if (!isRealHeaderRow(cleaned)) {
-          skipped++;
-          lg('Skipping non-header row ' + skipped + ': "' + cleaned.slice(0,3).join(' | ') + '"', 'info');
-          continue;
-        }
-        headers = cleaned;
-        lg('Real headers found on row ' + (skipped+1) + ': ' + headers.join(' | '), 'ok');
-        continue;
-      }
-      if (cols.every(c=>!c.trim())) continue; // skip fully empty lines only
-      const row = {}; headers.forEach((h,i) => row[h] = (cols[i]||'').trim().replace(/^"|"$/g,''));
-      onRow(row); total++;
+async function streamCSV(file,onRow,onProg){
+  const CHUNK=512*1024,dec=new TextDecoder('utf-8');
+  let headers=null,left='',delim=null,total=0,skipped=0,offset=0;
+  const size=file.size;
+  while(offset<size){
+    const buf=await file.slice(offset,offset+CHUNK).arrayBuffer();
+    const txt=left+dec.decode(buf,{stream:true});
+    const lines=txt.split('\n');left=lines.pop();
+    for(const line of lines){
+      if(!delim){delim=(line.match(/\t/g)||[]).length>(line.match(/,/g)||[]).length?'\t':',';lg('Delimiter: '+(delim==='\t'?'TAB':'COMMA'),'info');}
+      const cols=splitLine(line,delim);
+      if(!headers){const c=cols.map(h=>h.trim().replace(/^\ufeff/,'').replace(/\r/,'').replace(/^"|"$/g,''));if(!isRealHeaderRow(c)){skipped++;lg('Skipping row '+(skipped)+': "'+c.slice(0,2).join('|')+'"','info');continue;}headers=c;lg('Headers found: '+headers.join(' | '),'ok');continue;}
+      if(cols.every(c=>!c.trim()))continue;
+      const row={};headers.forEach((h,i)=>row[h]=(cols[i]||'').trim().replace(/^"|"$/g,''));
+      onRow(row);total++;
     }
-    offset += CHUNK;
-    onProg(offset/size, total);
-    await sleep(0);
+    offset+=CHUNK;onProg(offset/size,total);await sleep(0);
   }
-  if (left.trim() && headers) {
-    const cols = splitLine(left, delim||',');
-    const row = {}; headers.forEach((h,i) => row[h]=(cols[i]||'').trim().replace(/^"|"$/g,''));
-    onRow(row); total++;
-  }
+  if(left.trim()&&headers){const cols=splitLine(left,delim||',');const row={};headers.forEach((h,i)=>row[h]=(cols[i]||'').trim().replace(/^"|"$/g,''));onRow(row);total++;}
   return total;
 }
 
-// ── main process ──────────────────────────────────────────
-async function runProcess() {
-  const btn = document.getElementById('procBtn');
-  btn.disabled = true;
-  document.getElementById('logBox').innerHTML = '';
-  setBar('Starting...', 'working');
-
-  try {
-    // mapping - handle CSV (File) or Excel (array)
+async function runProcess(){
+  const btn=document.getElementById('procBtn');
+  btn.disabled=true;document.getElementById('logBox').innerHTML='';setBar('Starting...','working');
+  try{
     let mRows;
-    if (Array.isArray(mapRows)) {
-      mRows = mapRows;
-    } else {
-      lg('Streaming mapping CSV...', 'info');
-      mRows = [];
-      await streamCSV(mapRows, r => mRows.push(r), () => {});
-    }
-    const m0 = mRows[0]||{};
-    lg(`All mapping columns: ${Object.keys(m0).join(' | ')}`, 'info');
-    const UC = findCol(m0,['Emp Code','EmpCode','emp_code','UserCode','User Code']);
-    const UN = findCol(m0,['User Name','UserName','Name','Agent Name']);
-    const AS = findCol(m0,['Active Status','ActiveStatus','Status','EmpStatus']);
-    const DJ = findCol(m0,['DOJ','Date of Joining','DateOfJoining']);
-    const UT = findCol(m0,['Unit','unit','Branch','Location']);
-    const TL = findCol(m0,['Team Leader Name','TeamLeaderName','TL Name','TLName','TL','Team Leader']);
-    lg(`Matched → EmpCode="${UC}" Unit="${UT}" TL="${TL}"`, 'info');
+    if(Array.isArray(mapRows)){mRows=mapRows;}
+    else{lg('Streaming mapping CSV...','info');mRows=[];await streamCSV(mapRows,r=>mRows.push(r),()=>{});}
+    const m0=mRows[0]||{};
+    lg('Mapping columns: '+Object.keys(m0).join(' | '),'info');
+    const UC=findCol(m0,['Emp Code','EmpCode','emp_code','UserCode','User Code']);
+    const UN=findCol(m0,['User Name','UserName','Name','Agent Name']);
+    const AS=findCol(m0,['Active Status','ActiveStatus','Status','EmpStatus']);
+    const DJ=findCol(m0,['DOJ','Date of Joining','DateOfJoining']);
+    const UT=findCol(m0,['Unit','unit','Branch','Location']);
+    const TL=findCol(m0,['Team Leader Name','TeamLeaderName','TL Name','TLName','TL','Team Leader']);
+    lg('EmpCode:"'+UC+'" Unit:"'+UT+'" TL:"'+TL+'"');
+    const map={};
+    for(const r of mRows){const c=String(r[UC]||'').trim();if(!c)continue;map[c]={name:String(r[UN]||'').trim(),status:String(r[AS]||'').trim(),doj:DJ?String(r[DJ]||'').trim():'',unit:String(r[UT]||'').trim(),tl:TL?String(r[TL]||'').trim():''};}
+    lg('Mapping: '+Object.keys(map).length+' agents · sample: "'+Object.keys(map)[0]+'"','ok');
 
-    const map = {};
-    for (const r of mRows) {
-      const c = String(r[UC]||'').trim(); if (!c) continue;
-      map[c] = { name:String(r[UN]||'').trim(), status:String(r[AS]||'').trim(), doj:DJ?String(r[DJ]||'').trim():'', unit:String(r[UT]||'').trim(), tl:TL?String(r[TL]||'').trim():'' };
-    }
-    lg(`Mapping loaded: ${Object.keys(map).length} agents`, 'ok');
-    lg(`Sample emp code: "${Object.keys(map)[0]||'?'}"`);
-
-    // raw - handle CSV (File object) or Excel (array)
-    setBar('Processing raw call data...', 'working');
-    await sleep(30);
-
-    // ── exclusion & cleanup rules ──
-    const EXCLUDE_AGENTS = new Set([
-      'convin2','mo_voices','navneet_zoho1','test_agami1','agami_02','agami_test',
-      '38850_agent','test_agami2','test_hyd','krushi_thane','tm0235'
-    ]);
-    function cleanCode(raw) {
-      let c = String(raw||'').trim();
-      // strip _agent suffix e.g. "26166_agent" → "26166"
-      c = c.replace(/_agent$/i, '');
-      return c;
-    }
-    function isExcluded(c) {
-      if (!c) return true;
-      if (EXCLUDE_AGENTS.has(c.toLowerCase())) return true;
-      if (/^TM\d+$/i.test(c)) return true; // all TM codes
-      return false;
-    }
-
-    const stats = {};
-    let AG=null, DR=null, DT=null, colDone=false;
-    let totalRawCalls=0;
-
-    const processRow = (row) => {
-      if (!colDone) {
-        lg(`All raw columns: ${Object.keys(row).join(' | ')}`, 'info');
-        AG = findCol(row,['Agent Username','AgentUsername','Emp Code','EmpCode','Username']);
-        DR = findCol(row,['Duration','duration','TalkTime','Talk Time']);
-        DT = findCol(row,['Date Time','DateTime','Created On','CreatedOn','Call Date']);
-        colDone = true;
-        lg(`Matched → Agent="${AG}" Duration="${DR}" DateTime="${DT}"`, 'info');
-        lg(`Sample agent value: "${AG ? String(row[AG]||'') : 'NOT FOUND'}"`, AG?'info':'err');
-      }
-      totalRawCalls++; // count every row as a call
-      const raw = AG ? String(row[AG]||'').trim() : '';
-      const c = cleanCode(raw);
-      if (!c || isExcluded(c)) return; // skip TM, test, blank
-      if (!stats[c]) stats[c] = {calls:0, secs:0, dates:new Set()};
-      stats[c].calls++;
-      stats[c].secs += parseDur(row[DR]);
-      if (DT && row[DT]) { const d=new Date(row[DT]); if(!isNaN(d)) stats[c].dates.add(d.toDateString()); }
+    setBar('Processing raw data...','working');await sleep(30);
+    const EXCL=new Set(['convin2','mo_voices','navneet_zoho1','test_agami1','agami_02','agami_test','38850_agent','test_agami2','test_hyd','krushi_thane','tm0235']);
+    const cleanCode=r=>{let c=String(r||'').trim();c=c.replace(/_agent$/i,'');return c;};
+    const isExcl=c=>{if(!c)return true;if(EXCL.has(c.toLowerCase()))return true;if(/^TM\d+$/i.test(c))return true;return false;};
+    const stats={};let AG=null,DR=null,DT=null,colDone=false,totalRawCalls=0;
+    const processRow=row=>{
+      if(!colDone){lg('Raw columns: '+Object.keys(row).join(' | '),'info');AG=findCol(row,['Agent Username','AgentUsername','Emp Code','EmpCode','Username']);DR=findCol(row,['Duration','duration','TalkTime','Talk Time']);DT=findCol(row,['Date Time','DateTime','Created On','CreatedOn','Call Date']);colDone=true;lg('Agent:"'+AG+'" Duration:"'+DR+'" DateTime:"'+DT+'"');lg('Sample: "'+(AG?String(row[AG]||''):'NOT FOUND')+'"',AG?'info':'err');}
+      totalRawCalls++;
+      const raw=AG?String(row[AG]||'').trim():'';const c=cleanCode(raw);if(!c||isExcl(c))return;
+      if(!stats[c])stats[c]={calls:0,secs:0,dates:new Set()};
+      stats[c].calls++;stats[c].secs+=parseDur(row[DR]);
+      if(DT&&row[DT]){const d=new Date(row[DT]);if(!isNaN(d))stats[c].dates.add(d.toDateString());}
     };
+    let total=0;
+    if(rawFile instanceof File){lg('Streaming CSV...','info');total=await streamCSV(rawFile,processRow,(pct,rows)=>setBar('Streaming: '+Math.round(pct*100)+'% — '+rows.toLocaleString()+' rows','working'));}
+    else if(Array.isArray(rawFile)){lg('Processing Excel: '+rawFile.length.toLocaleString()+' rows','info');for(let i=0;i<rawFile.length;i++){processRow(rawFile[i]);total++;if(i%5000===0){setBar('Processing: '+i.toLocaleString()+'/'+rawFile.length.toLocaleString(),'working');await sleep(0);}}}
+    else throw new Error('Raw file not loaded. Re-upload.');
 
-    let total = 0;
-    if (rawFile instanceof File) {
-      // CSV - stream it
-      lg('Reading raw file as CSV stream...', 'info');
-      total = await streamCSV(rawFile, processRow, (pct, rows) => {
-        setBar(`Streaming: ${Math.round(pct*100)}% — ${rows.toLocaleString()} rows`, 'working');
-      });
-    } else if (Array.isArray(rawFile)) {
-      // Excel - already loaded as array
-      lg(`Reading raw file as Excel array: ${rawFile.length.toLocaleString()} rows`, 'info');
-      for (let i = 0; i < rawFile.length; i++) {
-        processRow(rawFile[i]);
-        total++;
-        if (i % 5000 === 0) { setBar(`Processing: ${i.toLocaleString()} / ${rawFile.length.toLocaleString()} rows`, 'working'); await sleep(0); }
-      }
-    } else {
-      throw new Error('Raw file not loaded correctly. Please re-upload.');
-    }
+    lg('Raw done: '+total.toLocaleString()+' rows','ok');
+    const matched=Object.keys(stats).filter(k=>map[k]).length;
+    lg('Matched: '+matched,matched===0?'err':'ok');
+    const dadCalls=Object.entries(stats).filter(([k])=>map[k]).reduce((a,[,s])=>a+s.calls,0);
+    const otherCalls=totalRawCalls-dadCalls;
+    lg('Total:'+totalRawCalls.toLocaleString()+' DAD:'+dadCalls.toLocaleString()+' Other:'+otherCalls.toLocaleString(),'ok');
 
-    lg(`Raw done: ${total.toLocaleString()} rows · ${Object.keys(stats).length} unique agents (after exclusions)`, 'ok');
-    const matched = Object.keys(stats).filter(k=>map[k]).length;
-    lg(`Matched to mapping: ${matched}`, matched===0?'err':'ok');
-    if (matched===0) lg(`Sample raw agents: ${Object.keys(stats).slice(0,3).join(', ')}`, 'err');
-    const dadCalls = Object.entries(stats).filter(([k])=>map[k]).reduce((a,[,s])=>a+s.calls,0);
-    const otherCalls = totalRawCalls - dadCalls;
-    lg(`Total: ${totalRawCalls.toLocaleString()} · DAD: ${dadCalls.toLocaleString()} · Other (TM/test/unmapped): ${otherCalls.toLocaleString()}`, 'ok');
+    setBar('Building reports...','working');await sleep(30);
+    r1=[];let tA=0,tC=0,tAb=0,tBl=0;
+    for(const[code,info]of Object.entries(map)){const s=stats[code]||{calls:0,secs:0,dates:new Set()};const nwd=s.dates.size;const avgS=nwd>0?s.secs/nwd:0;const status=avgS>=3600?'Above 1 Hr':'Below 1 Hr';tA++;tC+=s.calls;if(status==='Above 1 Hr')tAb++;else tBl++;r1.push({code,name:info.name,status:info.status,doj:fmtDate(info.doj),nwd,calls:s.calls,tt:hms(s.secs),avgC:nwd>0?(s.calls/nwd).toFixed(1):0,avgTT:hms(avgS),result:status,unit:info.unit,tl:info.tl});}
+    lg('Report 1: '+r1.length+' agents','ok');
+    r2=[];const units=[...new Set(Object.values(map).map(m=>m.unit).filter(Boolean))].sort();
+    for(const unit of units){const tls=[...new Set(Object.entries(map).filter(([,m])=>m.unit===unit).map(([,m])=>m.tl).filter(Boolean))].sort();const rows=[];let ut=0,ua=0,ub=0;for(const tl of tls){const agents=Object.entries(map).filter(([,m])=>m.unit===unit&&m.tl===tl);let tot=0,ab=0,bl=0;for(const[c]of agents){const s=stats[c]||{secs:0,dates:new Set()};const nwd=s.dates.size;const avg=nwd>0?s.secs/nwd:0;tot++;if(avg>=3600)ab++;else bl++;}rows.push({tl,tot,ab,bl,abP:tot>0?((ab/tot)*100).toFixed(1)+'%':'0%',blP:tot>0?((bl/tot)*100).toFixed(1)+'%':'0%'});ut+=tot;ua+=ab;ub+=bl;}r2.push({unit,rows,sub:{tot:ut,ab:ua,bl:ub,abP:ut>0?((ua/ut)*100).toFixed(1)+'%':'0%',blP:ut>0?((ub/ut)*100).toFixed(1)+'%':'0%'}});}
+    lg('Report 2: '+r2.length+' units','ok');
 
-    // report 1
-    setBar('Building reports...', 'working');
-    await sleep(30);
-    r1 = [];
-    let tA=0, tC=0, tAb=0, tBl=0;
-    for (const [code, info] of Object.entries(map)) {
-      const s = stats[code]||{calls:0,secs:0,dates:new Set()};
-      const nwd = s.dates.size;
-      const avgS = nwd>0 ? s.secs/nwd : 0;
-      const status = avgS>=3600 ? 'Above 1 Hr' : 'Below 1 Hr';
-      tA++; tC+=s.calls;
-      if (status==='Above 1 Hr') tAb++; else tBl++;
-      r1.push({ code, name:info.name, status:info.status, doj:fmtDate(info.doj), nwd, calls:s.calls, tt:hms(s.secs), avgC:nwd>0?(s.calls/nwd).toFixed(1):0, avgTT:hms(avgS), result:status, unit:info.unit, tl:info.tl });
-    }
-    lg(`Report 1: ${r1.length} agents`, 'ok');
-
-    // report 2
-    r2 = [];
-    const units = [...new Set(Object.values(map).map(m=>m.unit).filter(Boolean))].sort();
-    for (const unit of units) {
-      const tls = [...new Set(Object.entries(map).filter(([,m])=>m.unit===unit).map(([,m])=>m.tl).filter(Boolean))].sort();
-      const rows = [];
-      let ut=0,ua=0,ub=0;
-      for (const tl of tls) {
-        const agents = Object.entries(map).filter(([,m])=>m.unit===unit&&m.tl===tl);
-        let tot=0,ab=0,bl=0;
-        for (const [c] of agents) {
-          const s=stats[c]||{secs:0,dates:new Set()};
-          const nwd=s.dates.size; const avg=nwd>0?s.secs/nwd:0;
-          tot++; if(avg>=3600) ab++; else bl++;
-        }
-        rows.push({tl,tot,ab,bl,abP:tot>0?((ab/tot)*100).toFixed(1)+'%':'0%',blP:tot>0?((bl/tot)*100).toFixed(1)+'%':'0%'});
-        ut+=tot;ua+=ab;ub+=bl;
-      }
-      r2.push({unit,rows,sub:{tot:ut,ab:ua,bl:ub,abP:ut>0?((ua/ut)*100).toFixed(1)+'%':'0%',blP:ut>0?((ub/ut)*100).toFixed(1)+'%':'0%'}});
-    }
-    lg(`Report 2: ${r2.length} units`, 'ok');
-
-    window._S = {tA, tC, tAb, tBl, totalRawCalls, dadCalls, otherCalls};
-    window._TS = new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'});
-    setBar('✓ Done! Switching to view...', 'ok');
-    lg('All done!', 'ok');
-    btn.disabled = false;
-    document.getElementById('saveBtn').style.display = 'inline-flex';
-    await sleep(600);
+    window._S={tA,tC,tAb,tBl,totalRawCalls,dadCalls,otherCalls};
+    window._TS=new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'});
+    btn.disabled=false;
+    await saveToCloud();
+    await sleep(500);
     showTab('view');
-
-  } catch(e) {
-    setBar('✗ Error: '+e.message, 'err');
-    lg('ERROR: '+e.message, 'err');
-    btn.disabled = false;
-    console.error(e);
-  }
+  } catch(e){setBar('✗ Error: '+e.message,'err');lg('ERROR: '+e.message,'err');btn.disabled=false;console.error(e);}
 }
 
-// ── render view ───────────────────────────────────────────
-function renderView() {
-  const S = window._S||{};
-  document.getElementById('stA').textContent    = (S.tA||0).toLocaleString();
-  document.getElementById('stC').textContent    = (S.totalRawCalls||0).toLocaleString();
-  document.getElementById('stDAD').textContent  = (S.dadCalls||0).toLocaleString();
-  document.getElementById('stOther').textContent= (S.otherCalls||0).toLocaleString();
-  document.getElementById('stAb').textContent   = (S.tAb||0).toLocaleString();
-  document.getElementById('stBl').textContent   = (S.tBl||0).toLocaleString();
-  document.getElementById('statsBox2').style.display = 'grid';
-
-  // insights
-  const pctAb = S.tA>0?((S.tAb/S.tA)*100).toFixed(1):0;
-  const pctBl = S.tA>0?((S.tBl/S.tA)*100).toFixed(1):0;
-  let bestU='',bestUP=0;
-  let bestTL='',bestTLP=0,bestTLU='';
-  let worstTL='',worstTLP=101,worstTLU='';
-  for (const sec of r2) {
-    const p = sec.sub.tot>0?(sec.sub.ab/sec.sub.tot)*100:0;
-    if(p>bestUP){bestUP=p;bestU=sec.unit;}
-    for (const trow of sec.rows) {
-      const tp = trow.tot>0?(trow.ab/trow.tot)*100:0;
-      if(tp>bestTLP){bestTLP=tp;bestTL=trow.tl;bestTLU=sec.unit;}
-      if(tp<worstTLP){worstTLP=tp;worstTL=trow.tl;worstTLU=sec.unit;}
-    }
-  }
-  // top and bottom agent by avg talktime (only agents with calls > 0)
-  const activeAgents = r1.filter(r=>r.calls>0);
-  let topAgent=null, botAgent=null;
-  if(activeAgents.length>0){
-    topAgent = activeAgents.reduce((a,b)=>parseTT(a.avgTT)>=parseTT(b.avgTT)?a:b);
-    botAgent = activeAgents.reduce((a,b)=>parseTT(a.avgTT)<=parseTT(b.avgTT)?a:b);
-  }
-  function parseTT(hmsStr){ const p=hmsStr.split(':'); return +p[0]*3600+(+p[1])*60+(+p[2]||0); }
-
-  const ins = [
+function renderView(){
+  const S=window._S||{};
+  document.getElementById('stA').textContent=(S.tA||0).toLocaleString();
+  document.getElementById('stC').textContent=(S.totalRawCalls||0).toLocaleString();
+  document.getElementById('stDAD').textContent=(S.dadCalls||0).toLocaleString();
+  document.getElementById('stOther').textContent=(S.otherCalls||0).toLocaleString();
+  document.getElementById('stAb').textContent=(S.tAb||0).toLocaleString();
+  document.getElementById('stBl').textContent=(S.tBl||0).toLocaleString();
+  document.getElementById('statsBox2').style.display='grid';
+  const pctAb=S.tA>0?((S.tAb/S.tA)*100).toFixed(1):0;
+  const pctBl=S.tA>0?((S.tBl/S.tA)*100).toFixed(1):0;
+  let bestU='',bestUP=0,bestTL='',bestTLP=0,bestTLU='',worstTL='',worstTLP=101,worstTLU='';
+  for(const sec of r2){const p=sec.sub.tot>0?(sec.sub.ab/sec.sub.tot)*100:0;if(p>bestUP){bestUP=p;bestU=sec.unit;}for(const t of sec.rows){const tp=t.tot>0?(t.ab/t.tot)*100:0;if(tp>bestTLP){bestTLP=tp;bestTL=t.tl;bestTLU=sec.unit;}if(tp<worstTLP){worstTLP=tp;worstTL=t.tl;worstTLU=sec.unit;}}}
+  const active=r1.filter(r=>r.calls>0);
+  const pTT=h=>{const p=h.split(':');return+p[0]*3600+(+p[1])*60+(+p[2]||0);};
+  const top=active.length>0?active.reduce((a,b)=>pTT(a.avgTT)>=pTT(b.avgTT)?a:b):null;
+  const bot=active.length>0?active.reduce((a,b)=>pTT(a.avgTT)<=pTT(b.avgTT)?a:b):null;
+  const ins=[
     {t:`<strong>${pctAb}%</strong> of agents (${S.tAb} of ${S.tA}) are meeting the daily 1-hour talk time target.`},
     {t:`<strong>${pctBl}%</strong> of agents (${S.tBl}) are below the 1-hour daily average — coaching recommended.`},
-    {t: bestU?`<strong>${bestU}</strong> is the top performing unit with <strong>${bestUP.toFixed(1)}%</strong> of agents above target.`:`No unit data available.`},
-    {t: worstTL?`TL needing most support: <strong>${worstTL}</strong> (${worstTLU}) — only <strong>${worstTLP.toFixed(1)}%</strong> of their team above 1-hr target.`:`No TL data available.`},
-    {t: (topAgent&&botAgent)?`Top agent: <strong>${topAgent.name}</strong> (${topAgent.avgTT} avg) · Bottom active agent: <strong>${botAgent.name}</strong> (${botAgent.avgTT} avg).`:`No agent performance data available.`},
+    {t:bestU?`<strong>${bestU}</strong> is the top performing unit with <strong>${bestUP.toFixed(1)}%</strong> of agents above target.`:'No unit data available.'},
+    {t:worstTL?`TL needing support: <strong>${worstTL}</strong> (${worstTLU}) — only <strong>${worstTLP.toFixed(1)}%</strong> above target.`:'No TL data available.'},
+    {t:(top&&bot)?`Top: <strong>${top.name}</strong> (${top.avgTT}) · Bottom: <strong>${bot.name}</strong> (${bot.avgTT})`:'No agent data available.'},
   ];
-  document.getElementById('insGrid').innerHTML = ins.map((i,n)=>`<div class="icard"><div class="inum">Point 0${n+1}</div><div class="itext">${i.t}</div></div>`).join('');
+  document.getElementById('insGrid').innerHTML=ins.map((i,n)=>`<div class="icard"><div class="inum">Point 0${n+1}</div><div class="itext">${i.t}</div></div>`).join('');
+  const uV=[...new Set(r1.map(r=>r.unit).filter(Boolean))].sort();
+  const tlV=[...new Set(r1.map(r=>r.tl).filter(Boolean))].sort();
+  const sV=[...new Set(r1.map(r=>r.status).filter(Boolean))].sort();
+  document.getElementById('f-unit').innerHTML='<option value="">All Units</option>'+uV.map(v=>`<option>${v}</option>`).join('');
+  document.getElementById('f-tl').innerHTML='<option value="">All TLs</option>'+tlV.map(v=>`<option>${v}</option>`).join('');
+  document.getElementById('f-status').innerHTML='<option value="">All Status</option>'+sV.map(v=>`<option>${v}</option>`).join('');
+  document.getElementById('f-result').innerHTML='<option value="">All Results</option><option>Above 1 Hr</option><option>Below 1 Hr</option>';
+  document.getElementById('f-unit2').innerHTML='<option value="">All Units</option>'+uV.map(v=>`<option>${v}</option>`).join('');
+  renderTable1();renderTable2();
+  document.getElementById('viewMsg').style.display='none';
+  document.getElementById('insBox').style.display='block';
+  document.getElementById('statsBox').style.display='grid';
+  document.getElementById('dlBtns').style.display='flex';
+  document.getElementById('tGrid').style.display='grid';
+  if(window._TS){const el=document.getElementById('tsLabel');el.style.display='block';el.textContent='🕐 Last processed: '+window._TS;}
+}
 
-  // populate filter dropdowns
-  const unitVals = [...new Set(r1.map(r=>r.unit).filter(Boolean))].sort();
-  const statusVals = [...new Set(r1.map(r=>r.status).filter(Boolean))].sort();
-  const resultVals = ['Above 1 Hr','Below 1 Hr'];
-  document.getElementById('f-unit').innerHTML = '<option value="">All Units</option>'+unitVals.map(v=>`<option>${v}</option>`).join('');
-  document.getElementById('f-status').innerHTML = '<option value="">All Status</option>'+statusVals.map(v=>`<option>${v}</option>`).join('');
-  document.getElementById('f-result').innerHTML = '<option value="">All Results</option>'+resultVals.map(v=>`<option>${v}</option>`).join('');
-  document.getElementById('f-unit2').innerHTML = '<option value="">All Units</option>'+unitVals.map(v=>`<option>${v}</option>`).join('');
-
+function onUnitFilter(){
+  const fU=document.getElementById('f-unit').value;
+  const tlV=[...new Set(r1.filter(r=>!fU||r.unit===fU).map(r=>r.tl).filter(Boolean))].sort();
+  document.getElementById('f-tl').innerHTML='<option value="">All TLs</option>'+tlV.map(v=>`<option>${v}</option>`).join('');
   renderTable1();
-  renderTable2();
-
-  document.getElementById('viewMsg').style.display = 'none';
-  document.getElementById('insBox').style.display = 'block';
-  document.getElementById('statsBox').style.display = 'grid';
-  document.getElementById('dlBtns').style.display = 'flex';
-  document.getElementById('tGrid').style.display = 'grid';
-  if (window._TS) { const el=document.getElementById('tsLabel'); el.style.display='block'; el.textContent='🕐 Last processed: '+window._TS; }
+}
+function renderTable1(){
+  const fU=document.getElementById('f-unit').value,fT=document.getElementById('f-tl').value,fS=document.getElementById('f-status').value,fR=document.getElementById('f-result').value;
+  const filtered=r1.filter(r=>(!fU||r.unit===fU)&&(!fT||r.tl===fT)&&(!fS||r.status===fS)&&(!fR||r.result===fR));
+  document.getElementById('tb1').innerHTML=filtered.map(r=>`<tr><td><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--accent)">${r.code}</span></td><td>${r.name}</td><td><span style="font-size:11px;color:var(--text-dim)">${r.status}</span></td><td>${r.nwd}</td><td class="ci">${r.calls.toLocaleString()}</td><td style="font-family:'Space Mono',monospace;font-size:12px">${r.tt}</td><td>${r.avgC}</td><td style="font-family:'Space Mono',monospace;font-size:12px">${r.avgTT}</td><td class="${r.result==='Above 1 Hr'?'sa':'sb'}">${r.result}</td></tr>`).join('');
+  document.getElementById('b1').textContent=filtered.length+' / '+r1.length+' agents';
+}
+function renderTable2(){
+  const fU=document.getElementById('f-unit2').value;
+  const filtered=fU?r2.filter(s=>s.unit===fU):r2;
+  let h='';
+  for(const sec of filtered){h+=`<tr class="row-unit"><td colspan="6">${sec.unit}</td></tr>`;for(const t of sec.rows)h+=`<tr><td style="padding-left:18px">${t.tl}</td><td class="ci">${t.tot}</td><td class="ca">${t.ab}</td><td class="cb">${t.bl}</td><td class="ca">${t.abP}</td><td class="cb">${t.blP}</td></tr>`;h+=`<tr class="row-sub"><td style="padding-left:10px;font-weight:700">${sec.unit} — Total</td><td class="ci" style="font-weight:700">${sec.sub.tot}</td><td class="ca" style="font-weight:700">${sec.sub.ab}</td><td class="cb" style="font-weight:700">${sec.sub.bl}</td><td class="ca" style="font-weight:700">${sec.sub.abP}</td><td class="cb" style="font-weight:700">${sec.sub.blP}</td></tr>`;}
+  document.getElementById('tb2').innerHTML=h;
+  document.getElementById('b2').textContent=r2.length+' units';
 }
 
-// ── filtered table renders ────────────────────────────────
-function renderTable1() {
-  const fUnit   = document.getElementById('f-unit').value;
-  const fStatus = document.getElementById('f-status').value;
-  const fResult = document.getElementById('f-result').value;
-  const filtered = r1.filter(r =>
-    (!fUnit   || r.unit   === fUnit)   &&
-    (!fStatus || r.status === fStatus) &&
-    (!fResult || r.result === fResult)
-  );
-  document.getElementById('tb1').innerHTML = filtered.map(r=>`<tr>
-    <td><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--accent)">${r.code}</span></td>
-    <td>${r.name}</td>
-    <td><span style="font-size:11px;color:var(--text-dim)">${r.status}</span></td>
-    <td>${r.nwd}</td>
-    <td class="ci">${r.calls.toLocaleString()}</td>
-    <td style="font-family:'Space Mono',monospace;font-size:12px">${r.tt}</td>
-    <td>${r.avgC}</td>
-    <td style="font-family:'Space Mono',monospace;font-size:12px">${r.avgTT}</td>
-    <td class="${r.result==='Above 1 Hr'?'sa':'sb'}">${r.result}</td>
-  </tr>`).join('');
-  document.getElementById('b1').textContent = filtered.length+' / '+r1.length+' agents';
-}
+function dl1(){const wb=XLSX.utils.book_new();const rows=[['User Code','User Name','Active Status','DOJ','NWD','Total Calls','Total Talktime','Avg Calls','Avg Talktime','Status']];for(const r of r1)rows.push([r.code,r.name,r.status,r.doj,r.nwd,r.calls,r.tt,r.avgC,r.avgTT,r.result]);const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[10,22,14,12,6,12,14,10,12,12].map(w=>({wch:w}));XLSX.utils.book_append_sheet(wb,ws,'Report 1 - Agent Summary');XLSX.writeFile(wb,'TalkTime_R1_'+new Date().toISOString().slice(0,10)+'.xlsx');}
+function dl2(){const wb=XLSX.utils.book_new();const rows=[['TL Name','Total','Above 1Hr','Below 1Hr','Above%','Below%']];for(const sec of r2){rows.push([sec.unit,'','','','','']);for(const t of sec.rows)rows.push([t.tl,t.tot,t.ab,t.bl,t.abP,t.blP]);rows.push([sec.unit+' Total',sec.sub.tot,sec.sub.ab,sec.sub.bl,sec.sub.abP,sec.sub.blP]);}const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[26,10,10,10,10,10].map(w=>({wch:w}));XLSX.utils.book_append_sheet(wb,ws,'Report 2 - Unit Wise');XLSX.writeFile(wb,'TalkTime_R2_'+new Date().toISOString().slice(0,10)+'.xlsx');}
 
-function renderTable2() {
-  const fUnit2 = document.getElementById('f-unit2').value;
-  let r2html='';
-  const filtered = fUnit2 ? r2.filter(s=>s.unit===fUnit2) : r2;
-  for (const sec of filtered) {
-    r2html+=`<tr class="row-unit"><td colspan="6">${sec.unit}</td></tr>`;
-    for (const trow of sec.rows) r2html+=`<tr><td style="padding-left:18px">${trow.tl}</td><td class="ci">${trow.tot}</td><td class="ca">${trow.ab}</td><td class="cb">${trow.bl}</td><td class="ca">${trow.abP}</td><td class="cb">${trow.blP}</td></tr>`;
-    r2html+=`<tr class="row-sub"><td style="padding-left:10px;font-weight:700">${sec.unit} — Total</td><td class="ci" style="font-weight:700">${sec.sub.tot}</td><td class="ca" style="font-weight:700">${sec.sub.ab}</td><td class="cb" style="font-weight:700">${sec.sub.bl}</td><td class="ca" style="font-weight:700">${sec.sub.abP}</td><td class="cb" style="font-weight:700">${sec.sub.blP}</td></tr>`;
-  }
-  document.getElementById('tb2').innerHTML = r2html;
-  document.getElementById('b2').textContent = r2.length+' units';
-}
-
-// ── downloads ─────────────────────────────────────────────
-function dl1() {
-  const wb = XLSX.utils.book_new();
-  const rows=[['User Code','User Name','Active Status','DOJ','NWD','Total Calls','Total Talktime','Avg Calls','Avg Talktime','Status']];
-  for (const r of r1) rows.push([r.code,r.name,r.status,r.doj,r.nwd,r.calls,r.tt,r.avgC,r.avgTT,r.result]);
-  const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[10,22,14,12,6,12,14,10,12,12].map(w=>({wch:w}));
-  XLSX.utils.book_append_sheet(wb,ws,'Report 1 - Agent Summary');
-  XLSX.writeFile(wb,`TalkTime_R1_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
-function dl2() {
-  const wb=XLSX.utils.book_new();
-  const rows=[['TL Name','Total','Above 1Hr','Below 1Hr','Above%','Below%']];
-  for (const sec of r2) {
-    rows.push([sec.unit,'','','','','']);
-    for (const t of sec.rows) rows.push([t.tl,t.tot,t.ab,t.bl,t.abP,t.blP]);
-    rows.push([sec.unit+' Total',sec.sub.tot,sec.sub.ab,sec.sub.bl,sec.sub.abP,sec.sub.blP]);
-  }
-  const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[26,10,10,10,10,10].map(w=>({wch:w}));
-  XLSX.utils.book_append_sheet(wb,ws,'Report 2 - Unit Wise');
-  XLSX.writeFile(wb,`TalkTime_R2_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
-
-// init
 showTab('view');
+loadFromCloud();
 </script>
 </body>
 </html>
