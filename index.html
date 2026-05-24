@@ -192,9 +192,14 @@ tfoot td:first-child{text-align:left}
           </div>
           <select id="f-status" onchange="renderTable1()"><option value="">All Status</option></select>
           <select id="f-result" onchange="renderTable1()"><option value="">All Results</option></select>
+          <select id="f-sort-nwd" onchange="renderTable1()"><option value="">NWD: All</option><option value="h2l">High to Low</option><option value="l2h">Low to High</option></select>
+          <select id="f-sort-tt" onchange="renderTable1()"><option value="">Total TT: All</option><option value="h2l">High to Low</option><option value="l2h">Low to High</option></select>
+          <select id="f-sort-avgtt" onchange="renderTable1()"><option value="">Avg TT: All</option><option value="h2l">High to Low</option><option value="l2h">Low to High</option></select>
+          <select id="f-sort-ttscore" onchange="renderTable1()"><option value="">TT Score: All</option><option value="h2l">High to Low</option><option value="l2h">Low to High</option></select>
+          <select id="f-sort-dcscore" onchange="renderTable1()"><option value="">DC Score: All</option><option value="h2l">High to Low</option><option value="l2h">Low to High</option></select>
         </div>
         <div class="tscroll"><table>
-          <thead><tr><th>Code</th><th>Name</th><th>Status</th><th>NWD</th><th>Calls</th><th>Total TT</th><th>Avg Calls</th><th>Avg TT</th><th>Result</th></tr></thead>
+          <thead><tr><th>Code</th><th>Name</th><th>Status</th><th>NWD</th><th>Calls</th><th>Total TT</th><th>Avg Calls</th><th>Avg TT</th><th>Result</th><th>Talk Time Score</th><th>Daily Connect Score</th></tr></thead>
           <tbody id="tb1"></tbody>
         </table></div>
       </div>
@@ -289,7 +294,7 @@ async function loadFromCloud() {
     if (meta) window._S = { tA: +meta[1], tC: +meta[2], tAb: +meta[3], tBl: +meta[4], totalRawCalls: +meta[5], dadCalls: +meta[6], otherCalls: +meta[7] };
     window._TS = json.rows.find(r => r[0] === 'TS')?.[1] || '';
     for (const row of json.rows) {
-      if (row[0] === 'R1') r1.push({ code:row[1], name:row[2], status:row[3], doj:row[4], nwd:+row[5], calls:+row[6], tt:row[7], avgC:row[8], avgTT:row[9], result:row[10], unit:row[11], tl:row[12] });
+      if (row[0] === 'R1') r1.push({ code:row[1], name:row[2], status:row[3], doj:row[4], nwd:+row[5], calls:+row[6], tt:row[7], avgC:row[8], avgTT:row[9], result:row[10], unit:row[11], tl:row[12], ttScore:+row[13]||0, dcScore:+row[14]||0 });
       if (row[0] === 'R2') {
         let sec = r2.find(s => s.unit === row[1]);
         if (!sec) { sec = {unit:row[1], rows:[], sub:{}}; r2.push(sec); }
@@ -313,7 +318,7 @@ async function saveToCloud() {
     rows.push(['TS', window._TS || new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'})]);
     const S = window._S || {};
     rows.push(['META', S.tA||0, S.tC||0, S.tAb||0, S.tBl||0, S.totalRawCalls||0, S.dadCalls||0, S.otherCalls||0]);
-    for (const r of r1) rows.push(['R1', r.code, r.name, r.status, r.doj, r.nwd, r.calls, r.tt, r.avgC, r.avgTT, r.result, r.unit, r.tl]);
+    for (const r of r1) rows.push(['R1', r.code, r.name, r.status, r.doj, r.nwd, r.calls, r.tt, r.avgC, r.avgTT, r.result, r.unit, r.tl, r.ttScore||0, r.dcScore||0]);
     for (const sec of r2) {
       for (const t of sec.rows) rows.push(['R2', sec.unit, t.tl, t.tot, t.ab, t.bl, t.abP, t.blP]);
       rows.push(['R2', sec.unit, '__SUB__', sec.sub.tot, sec.sub.ab, sec.sub.bl, sec.sub.abP, sec.sub.blP]);
@@ -466,6 +471,85 @@ function parseDur(v) {
   if (p.length===3) return +p[0]*3600 + +p[1]*60 + +p[2];
   if (p.length===2) return +p[0]*60 + +p[1];
   return parseFloat(v)||0;
+}
+
+// FLEXIBLE DATE PARSER - handles any format
+function parseFlexDate(v) {
+  if (!v) return null;
+  v = String(v).trim();
+  if (!v) return null;
+  
+  // Try standard JS Date() first
+  let d = new Date(v);
+  if (!isNaN(d.getTime())) return d.toDateString();
+  
+  // Try DD/MM/YYYY or DD-MM-YYYY
+  let m = v.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (m) {
+    // Assume DD/MM/YYYY (day first, common in India/UK)
+    d = new Date(m[3], m[2]-1, m[1]);
+    if (!isNaN(d.getTime())) return d.toDateString();
+    // Try MM/DD/YYYY (month first, US format)
+    d = new Date(m[3], m[1]-1, m[2]);
+    if (!isNaN(d.getTime())) return d.toDateString();
+  }
+  
+  // Try YYYY/MM/DD or YYYY-MM-DD
+  m = v.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+  if (m) {
+    d = new Date(m[1], m[2]-1, m[3]);
+    if (!isNaN(d.getTime())) return d.toDateString();
+  }
+  
+  // Try DD-Mon-YYYY (e.g., 08-May-2024)
+  m = v.match(/^(\d{1,2})[\/\-]([A-Za-z]{3})[\/\-](\d{4})$/);
+  if (m) {
+    const months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+    const mon = months[m[2].toLowerCase()];
+    if (mon !== undefined) {
+      d = new Date(m[3], mon, m[1]);
+      if (!isNaN(d.getTime())) return d.toDateString();
+    }
+  }
+  
+  // Try DD MMM YYYY with spaces (e.g., "08 May 2024")
+  m = v.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})$/);
+  if (m) {
+    const months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+    const mon = months[m[2].toLowerCase()];
+    if (mon !== undefined) {
+      d = new Date(m[3], mon, m[1]);
+      if (!isNaN(d.getTime())) return d.toDateString();
+    }
+  }
+  
+  // Try timestamp (e.g., 1715184000000)
+  if (/^\d{10,13}$/.test(v)) {
+    const ts = v.length === 10 ? +v * 1000 : +v;
+    d = new Date(ts);
+    if (!isNaN(d.getTime())) return d.toDateString();
+  }
+  
+  return null;
+}
+
+// BUCKET 1: Talk Time Score (based on avg talk time per day in MINUTES)
+function getTalkTimeScore(avgTalkTimeSeconds) {
+  const mins = avgTalkTimeSeconds / 60;
+  if (mins < 75) return 1;
+  if (mins < 90) return 2;
+  if (mins < 120) return 3;
+  if (mins < 150) return 4;
+  return 5;
+}
+
+// BUCKET 2: Daily Connect Score (based on avg calls per day)
+function getDailyConnectScore(avgCallsPerDay) {
+  if (avgCallsPerDay < 50) return 1;
+  if (avgCallsPerDay <= 60) return 2;
+  if (avgCallsPerDay <= 70) return 3;
+  if (avgCallsPerDay <= 80) return 4;
+  return 5;
 }
 function hms(s) {
   s = Math.round(s);
@@ -650,7 +734,11 @@ async function runProcess() {
       if (!stats[c]) stats[c] = {calls:0, secs:0, dates:new Set()};
       stats[c].calls++;
       stats[c].secs += parseDur(row[DR]);
-      if (DT && row[DT]) { const d=new Date(row[DT]); if(!isNaN(d)) stats[c].dates.add(d.toDateString()); }
+      // Use flexible date parser
+      if (DT && row[DT]) {
+        const dateStr = parseFlexDate(row[DT]);
+        if (dateStr) stats[c].dates.add(dateStr);
+      }
     };
 
     let total = 0;
@@ -689,10 +777,31 @@ async function runProcess() {
       const s = stats[code]||{calls:0,secs:0,dates:new Set()};
       const nwd = s.dates.size;
       const avgS = nwd>0 ? s.secs/nwd : 0;
+      const avgCalls = nwd>0 ? s.calls/nwd : 0;
       const status = avgS>=3600 ? 'Above 1 Hr' : 'Below 1 Hr';
+      
+      // Calculate bucket scores
+      const ttScore = getTalkTimeScore(avgS);
+      const dcScore = getDailyConnectScore(avgCalls);
+      
       tA++; tC+=s.calls;
       if (status==='Above 1 Hr') tAb++; else tBl++;
-      r1.push({ code, name:info.name, status:info.status, doj:fmtDate(info.doj), nwd, calls:s.calls, tt:hms(s.secs), avgC:nwd>0?(s.calls/nwd).toFixed(1):0, avgTT:hms(avgS), result:status, unit:info.unit, tl:info.tl });
+      r1.push({ 
+        code, 
+        name:info.name, 
+        status:info.status, 
+        doj:fmtDate(info.doj), 
+        nwd, 
+        calls:s.calls, 
+        tt:hms(s.secs), 
+        avgC:avgCalls.toFixed(1), 
+        avgTT:hms(avgS), 
+        result:status, 
+        unit:info.unit, 
+        tl:info.tl,
+        ttScore,
+        dcScore
+      });
     }
     lg(`Report 1: ${r1.length} agents`, 'ok');
 
@@ -870,12 +979,47 @@ function renderTable1() {
   const fStatus = document.getElementById('f-status').value;
   const fResult = document.getElementById('f-result').value;
   const fTLs = window._selectedTLs || new Set();
-  const filtered = r1.filter(r =>
+  
+  // Sort filters
+  const sortNWD = document.getElementById('f-sort-nwd').value;
+  const sortTT = document.getElementById('f-sort-tt').value;
+  const sortAvgTT = document.getElementById('f-sort-avgtt').value;
+  const sortTTScore = document.getElementById('f-sort-ttscore').value;
+  const sortDCScore = document.getElementById('f-sort-dcscore').value;
+  
+  let filtered = r1.filter(r =>
     (!fUnit   || r.unit   === fUnit)   &&
     (fTLs.size === 0 || fTLs.has(r.tl)) &&
     (!fStatus || r.status === fStatus) &&
     (!fResult || r.result === fResult)
   );
+  
+  // Apply sorting
+  function parseTimeToSeconds(hms) {
+    const parts = hms.split(':');
+    return (+parts[0]) * 3600 + (+parts[1]) * 60 + (+parts[2] || 0);
+  }
+  
+  if (sortNWD) {
+    filtered.sort((a, b) => sortNWD === 'h2l' ? b.nwd - a.nwd : a.nwd - b.nwd);
+  } else if (sortTT) {
+    filtered.sort((a, b) => {
+      const aVal = parseTimeToSeconds(a.tt);
+      const bVal = parseTimeToSeconds(b.tt);
+      return sortTT === 'h2l' ? bVal - aVal : aVal - bVal;
+    });
+  } else if (sortAvgTT) {
+    filtered.sort((a, b) => {
+      const aVal = parseTimeToSeconds(a.avgTT);
+      const bVal = parseTimeToSeconds(b.avgTT);
+      return sortAvgTT === 'h2l' ? bVal - aVal : aVal - bVal;
+    });
+  } else if (sortTTScore) {
+    filtered.sort((a, b) => sortTTScore === 'h2l' ? (b.ttScore||0) - (a.ttScore||0) : (a.ttScore||0) - (b.ttScore||0));
+  } else if (sortDCScore) {
+    filtered.sort((a, b) => sortDCScore === 'h2l' ? (b.dcScore||0) - (a.dcScore||0) : (a.dcScore||0) - (b.dcScore||0));
+  }
+  
   document.getElementById('tb1').innerHTML = filtered.map(r=>`<tr>
     <td><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--accent)">${r.code}</span></td>
     <td>${r.name}</td>
@@ -886,6 +1030,8 @@ function renderTable1() {
     <td>${r.avgC}</td>
     <td style="font-family:'Space Mono',monospace;font-size:12px">${r.avgTT}</td>
     <td class="${r.result==='Above 1 Hr'?'sa':'sb'}">${r.result}</td>
+    <td><span style="font-weight:700;color:var(--accent2)">${r.ttScore||0}</span></td>
+    <td><span style="font-weight:700;color:var(--accent3)">${r.dcScore||0}</span></td>
   </tr>`).join('');
   document.getElementById('b1').textContent = filtered.length+' / '+r1.length+' agents';
 }
@@ -906,10 +1052,10 @@ function renderTable2() {
 // ── downloads ─────────────────────────────────────────────
 function dl1() {
   const wb = XLSX.utils.book_new();
-  const rows=[['User Code','User Name','Active Status','DOJ','NWD','Total Calls','Total Talktime','Avg Calls','Avg Talktime','Status']];
-  for (const r of r1) rows.push([r.code,r.name,r.status,r.doj,r.nwd,r.calls,r.tt,r.avgC,r.avgTT,r.result]);
+  const rows=[['User Code','User Name','Active Status','DOJ','NWD','Total Calls','Total Talktime','Avg Calls','Avg Talktime','Status','Talk Time Score','Daily Connect Score']];
+  for (const r of r1) rows.push([r.code,r.name,r.status,r.doj,r.nwd,r.calls,r.tt,r.avgC,r.avgTT,r.result,r.ttScore||0,r.dcScore||0]);
   const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[10,22,14,12,6,12,14,10,12,12].map(w=>({wch:w}));
+  ws['!cols']=[10,22,14,12,6,12,14,10,12,12,14,16].map(w=>({wch:w}));
   XLSX.utils.book_append_sheet(wb,ws,'Report 1 - Agent Summary');
   XLSX.writeFile(wb,`TalkTime_R1_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
